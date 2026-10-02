@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+
+{% block title %}UI Design System Styleguide — VeriAuthentic AI{% endblock %}
+{% block page_title %}Design System Styleguide{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-8);">
+
+  <div class="card card-raised" style="padding: var(--space-8);">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h2>Design System Living Styleguide</h2>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-top: 4px;">
+          Canonical reference for design tokens, typography scale, buttons, risk badges, form controls, skeleton loaders, and gauges.
+        </p>
+      </div>
+      <button class="btn btn-secondary" data-action="toggle-theme">Toggle Dark / Light Mode</button>
+    </div>
+  </div>
+
+  <!-- 1. TYPOGRAPHY SCALE -->
+  <div class="card">
+    <h3 style="margin-bottom: var(--space-4);">1. Typography Hierarchy</h3>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <h1>Heading 1 (48px / 3rem)</h1>
+      <h2>Heading 2 (30px / 1.875rem)</h2>
+      <h3>Heading 3 (24px / 1.5rem)</h3>
+      <h4>Heading 4 (20px / 1.25rem)</h4>
+      <h5>Heading 5 (16px / 1rem)</h5>
+      <p>Body Paragraph Text (14px). Clean, readable typography at Grade-8 reading level.</p>
+      <code class="form-input-mono">Monospace Monospaced Code Font (JetBrains Mono)</code>
+    </div>
+  </div>
+
+  <!-- 2. BUTTON VARIANTS -->
+  <div class="card">
+    <h3 style="margin-bottom: var(--space-4);">2. Buttons & Actions</h3>
+    <div style="display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap;">
+      <button class="btn btn-primary">Primary Button</button>
+      <button class="btn btn-secondary">Secondary Button</button>
+      <button class="btn btn-ghost">Ghost Button</button>
+      <button class="btn btn-primary" disabled style="opacity: 0.5; cursor: not-allowed;">Disabled Button</button>
+    </div>
+  </div>
+
+  <!-- 3. RISK BADGES -->
+  <div class="card">
+    <h3 style="margin-bottom: var(--space-4);">3. Semantic Risk Band Badges</h3>
+    <div style="display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap;">
+      <span class="badge badge-low">Low Risk (0-25%)</span>
+      <span class="badge badge-moderate">Moderate Risk (26-50%)</span>
+      <span class="badge badge-high">High Risk (51-75%)</span>
+      <span class="badge badge-critical">Critical Risk (76-100%)</span>
+    </div>
+  </div>
+
+  <!-- 4. FORM INPUT CONTROLS -->
+  <div class="card">
+    <h3 style="margin-bottom: var(--space-4);">4. Form Controls & Inputs</h3>
+    <div class="grid grid-cols-2">
+      <div class="form-group">
+        <label class="form-label">Standard Text Input</label>
+        <input type="text" class="form-input" placeholder="Enter text...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Monospace Code Input</label>
+        <input type="text" class="form-input form-input-mono" value="AUTH-NIKE-7712">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Segmented Control Switcher</label>
+      <div class="segmented-control" style="width: 100%;">
+        <button class="segmented-btn active" style="flex:1;">Option A</button>
+        <button class="segmented-btn" style="flex:1;">Option B</button>
+        <button class="segmented-btn" style="flex:1;">Option C</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. SKELETON LOADERS -->
+  <div class="card">
+    <h3 style="margin-bottom: var(--space-4);">5. Skeleton Loading State</h3>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div class="skeleton" style="width: 60%; height: 24px;"></div>
+      <div class="skeleton" style="width: 100%; height: 16px;"></div>
+      <div class="skeleton" style="width: 80%; height: 16px;"></div>
+    </div>
+  </div>
+
+  <!-- 6. PROGRESS BARS -->
+  <div class="card">
+    <h3 style="margin-bottom: var(--space-4);">6. Multi-Signal Progress Bars</h3>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div>
+        <div style="font-size: 11px; margin-bottom: 2px;">Low Risk Signal (15%)</div>
+        <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 15%; background: var(--risk-low);"></div></div>
+      </div>
+      <div>
+        <div style="font-size: 11px; margin-bottom: 2px;">Moderate Risk Signal (45%)</div>
+        <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 45%; background: var(--risk-moderate);"></div></div>
+      </div>
+      <div>
+        <div style="font-size: 11px; margin-bottom: 2px;">Critical Risk Signal (85%)</div>
+        <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 85%; background: var(--risk-critical);"></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

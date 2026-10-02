@@ -1,0 +1,593 @@
+{% extends "layout.html" %}
+
+{% block title %}VeriAuthentic AI — Know What's Real. Before You Buy.{% endblock %}
+
+{% block content %}
+<div class="bg-grid-pattern" style="overflow-x: hidden; position: relative;">
+
+  <!-- Background Glow Accents -->
+  <div style="position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 1000px; height: 600px; background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.18), rgba(6, 182, 212, 0.08), transparent 70%); filter: blur(60px); pointer-events: none; z-index: 0;"></div>
+
+  <!-- =========================================================
+       1. HERO SECTION (TWO-COLUMN AI VERIFICATION LANDING)
+       ========================================================= -->
+  <section class="container hero-section" style="padding-top: var(--space-8); padding-bottom: var(--space-8); display: flex; align-items: center; position: relative; z-index: 2;">
+    <div class="grid grid-cols-12" style="align-items: center; gap: var(--space-8); width: 100%;">
+      
+      <!-- HERO LEFT COLUMN -->
+      <div class="col-span-6">
+        
+        <!-- Eyebrow Badge -->
+        <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 700; color: #818cf8; margin-bottom: var(--space-6); backdrop-filter: blur(8px);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          AI-POWERED PRODUCT AUTHENTICITY
+        </div>
+
+        <!-- Main Headline -->
+        <h1 style="font-size: clamp(2.8rem, 4.5vw, 4.2rem); line-height: 1.08; margin-bottom: var(--space-6); font-weight: 800; letter-spacing: -1.5px;">
+          Know What's <span class="text-gradient">Real.</span><br>
+          Before You Buy.
+        </h1>
+
+        <!-- Short & Powerful Subtext -->
+        <p style="font-size: var(--text-lg); color: var(--text-secondary); margin-bottom: var(--space-8); max-width: 520px; line-height: 1.6;">
+          Verify product authenticity with AI-powered image analysis and intelligent detection.
+        </p>
+
+        <!-- CTA Action Buttons -->
+        <div style="display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap; margin-bottom: var(--space-8);">
+          <a href="/verify" class="btn btn-primary" style="padding: 14px 32px; font-size: 16px; font-weight: 700; border-radius: var(--radius-md); box-shadow: 0 0 25px rgba(99, 102, 241, 0.45);">
+            Verify a Product →
+          </a>
+          <a href="#how-it-works" class="btn btn-secondary" style="padding: 14px 26px; font-size: 16px; border-radius: var(--radius-md);">
+            How It Works
+          </a>
+        </div>
+
+        <!-- 3 Trust Indicators -->
+        <div style="display: flex; gap: 24px; align-items: center; font-size: var(--text-sm); font-weight: 600; color: var(--text-muted);">
+          <div style="display: flex; align-items: center; gap: 6px; color: var(--color-genuine);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Fast</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; color: var(--brand-primary);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>AI-powered</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; color: var(--cyan-accent);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Easy to use</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- HERO RIGHT COLUMN (INTERACTIVE AI VERIFICATION VISUAL CENTERPIECE) -->
+      <div class="col-span-6">
+        <div style="position: relative; display: flex; justify-content: center; align-items: center;">
+          
+          <!-- Background Radar Circles -->
+          <div class="radar-bg"></div>
+          <div class="radar-bg-inner"></div>
+
+          <!-- Main Scanner Interface Frame -->
+          <div class="card card-glass" style="width: 100%; max-width: 480px; padding: var(--space-6); position: relative; z-index: 2; border: 1px solid rgba(99, 102, 241, 0.3); background: rgba(15, 23, 42, 0.85); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); backdrop-filter: blur(16px); border-radius: var(--radius-xl);">
+            
+            <!-- Animated Laser Scanning Line -->
+            <div class="scanner-laser-line"></div>
+
+            <!-- Header Status Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+                <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px;">AI SCANNING ENGINE ACTIVE</span>
+              </div>
+              
+              <div class="segmented-control" style="font-size: 10px; padding: 2px;">
+                <button class="segmented-btn active" id="demo-genuine-btn" onclick="toggleHeroDemo('genuine')" style="padding: 3px 10px;">Genuine</button>
+                <button class="segmented-btn" id="demo-fake-btn" onclick="toggleHeroDemo('fake')" style="padding: 3px 10px;">Suspicious</button>
+              </div>
+            </div>
+
+            <!-- Product Image Display Zone -->
+            <div style="position: relative; height: 180px; background: var(--bg-body); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: var(--space-4);">
+              
+              <!-- Floating Card 1: Image Analysis -->
+              <div class="float-card-1" style="position: absolute; top: 12px; left: 12px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(99, 102, 241, 0.4); padding: 6px 12px; border-radius: 8px; font-size: 10px; backdrop-filter: blur(8px); z-index: 6;">
+                <div style="color: #818cf8; font-weight: 700;">Image Analysis</div>
+                <div style="color: var(--text-muted); font-size: 9px;">Detects visual patterns</div>
+              </div>
+
+              <!-- Floating Card 2: AI Detection -->
+              <div class="float-card-2" style="position: absolute; top: 12px; right: 12px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(6, 182, 212, 0.4); padding: 6px 12px; border-radius: 8px; font-size: 10px; backdrop-filter: blur(8px); z-index: 6;">
+                <div style="color: var(--cyan-accent); font-weight: 700;">AI Detection</div>
+                <div style="color: var(--text-muted); font-size: 9px;">Uses ML models</div>
+              </div>
+
+              <!-- Floating Card 3: Authenticity Check -->
+              <div class="float-card-3" style="position: absolute; bottom: 12px; left: 12px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(16, 185, 129, 0.4); padding: 6px 12px; border-radius: 8px; font-size: 10px; backdrop-filter: blur(8px); z-index: 6;">
+                <div style="color: var(--color-genuine); font-weight: 700;">Authenticity Check</div>
+                <div style="color: var(--text-muted); font-size: 9px;">Finds counterfeit indicators</div>
+              </div>
+
+              <!-- Product Graphic Visual -->
+              <div id="demo-prod-icon" style="transition: transform 0.4s ease; z-index: 4;">
+                <svg width="76" height="76" viewBox="0 0 24 24" fill="none" stroke="var(--brand-primary)" stroke-width="1.3"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              </div>
+
+            </div>
+
+            <!-- Result Panel Preview -->
+            <div id="demo-result-box" class="card" style="border-left: 4px solid var(--color-genuine); background: var(--bg-raised); padding: 14px; transition: all 0.3s ease;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <div id="demo-badge-status" class="badge badge-low" style="margin-bottom: 4px;">AUTHENTIC</div>
+                  <div id="demo-title" style="font-weight: 700; font-size: var(--text-base);">Sony WH-1000XM5 Headphones</div>
+                  <div id="demo-sub" style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">Product appears genuine • Code AUTH-SONY-9921</div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 10px; color: var(--text-muted);">Status</div>
+                  <div id="demo-status-txt" style="font-size: 11px; font-weight: 700; color: var(--color-genuine);">Verified</div>
+                </div>
+              </div>
+
+              <div style="margin-top: 10px;">
+                <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">
+                  <span>Confidence Score</span>
+                  <span id="demo-score-txt" style="font-weight: 700; color: var(--color-genuine);">91.5% Confidence</span>
+                </div>
+                <div class="progress-bar-track" style="height: 6px;"><div id="demo-score-bar" class="progress-bar-fill" style="width: 91.5%; background: var(--color-genuine);"></div></div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 9px; color: var(--text-muted);">
+                <span>Model Analysis: Feature Classification</span>
+                <span>UI Demo Preview</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       2. CAPABILITY STRIP
+       ========================================================= -->
+  <section style="border-y: 1px solid var(--border-subtle); background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); padding: var(--space-6) 0; margin-bottom: var(--space-10); position: relative; z-index: 1;">
+    <div class="container">
+      <div class="grid grid-cols-4" style="gap: var(--space-6);">
+        
+        <div class="card card-glass" style="display: flex; align-items: center; gap: 16px; padding: var(--space-4) var(--space-6);">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(99, 102, 241, 0.15); color: #818cf8; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div style="font-weight: 800; font-size: 15px; color: var(--text-primary);">AI-POWERED</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Intelligent product analysis</div>
+          </div>
+        </div>
+
+        <div class="card card-glass" style="display: flex; align-items: center; gap: 16px; padding: var(--space-4) var(--space-6);">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(6, 182, 212, 0.15); color: var(--cyan-accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div>
+            <div style="font-weight: 800; font-size: 15px; color: var(--text-primary);">FAST</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Quick verification process</div>
+          </div>
+        </div>
+
+        <div class="card card-glass" style="display: flex; align-items: center; gap: 16px; padding: var(--space-4) var(--space-6);">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(168, 85, 247, 0.15); color: #a855f7; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div>
+            <div style="font-weight: 800; font-size: 15px; color: var(--text-primary);">SMART</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Advanced ML detection</div>
+          </div>
+        </div>
+
+        <div class="card card-glass" style="display: flex; align-items: center; gap: 16px; padding: var(--space-4) var(--space-6);">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(16, 185, 129, 0.15); color: var(--color-genuine); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div>
+            <div style="font-weight: 800; font-size: 15px; color: var(--text-primary);">CLEAR</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Easy-to-understand results</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       3. HOW VERIAUTHENTIC AI WORKS (4 SIMPLE STEPS)
+       ========================================================= -->
+  <section id="how-it-works" class="container reveal-on-scroll" style="margin-bottom: var(--space-12); position: relative; z-index: 1;">
+    <div style="text-align: center; max-width: 600px; margin: 0 auto var(--space-12) auto;">
+      <span style="font-size: var(--text-xs); font-weight: 800; color: var(--brand-primary); text-transform: uppercase; letter-spacing: 1px;">SIMPLE STEPS</span>
+      <h2 style="margin-top: 6px; font-size: var(--text-3xl);">How VeriAuthentic AI Works</h2>
+      <p style="margin-top: 8px; color: var(--text-secondary);">Get your product verified in just 4 simple steps.</p>
+    </div>
+
+    <div class="grid grid-cols-4" style="position: relative;">
+      
+      <!-- Step 01 -->
+      <div class="card step-card" style="padding: var(--space-6); background: var(--bg-surface);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+          <span style="font-size: 28px; font-weight: 900; color: #818cf8; opacity: 0.5;">01</span>
+          <div class="step-icon" style="width: 40px; height: 40px; border-radius: 10px; background: rgba(99, 102, 241, 0.12); color: #818cf8; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+        </div>
+        <h4 style="margin-bottom: 8px;">UPLOAD</h4>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary);">Upload a product image or security tag code.</p>
+      </div>
+
+      <!-- Step 02 -->
+      <div class="card step-card" style="padding: var(--space-6); background: var(--bg-surface);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+          <span style="font-size: 28px; font-weight: 900; color: var(--cyan-accent); opacity: 0.5;">02</span>
+          <div class="step-icon" style="width: 40px; height: 40px; border-radius: 10px; background: rgba(6, 182, 212, 0.12); color: var(--cyan-accent); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+        </div>
+        <h4 style="margin-bottom: 8px;">ANALYZE</h4>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary);">The system processes the product image and listing signals.</p>
+      </div>
+
+      <!-- Step 03 -->
+      <div class="card step-card" style="padding: var(--space-6); background: var(--bg-surface);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+          <span style="font-size: 28px; font-weight: 900; color: #a855f7; opacity: 0.5;">03</span>
+          <div class="step-icon" style="width: 40px; height: 40px; border-radius: 10px; background: rgba(168, 85, 247, 0.12); color: #a855f7; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+        </div>
+        <h4 style="margin-bottom: 8px;">DETECT</h4>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary);">The ML model analyzes the input for counterfeit risk.</p>
+      </div>
+
+      <!-- Step 04 -->
+      <div class="card step-card" style="padding: var(--space-6); background: var(--bg-surface);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+          <span style="font-size: 28px; font-weight: 900; color: var(--color-genuine); opacity: 0.8;">04</span>
+          <div class="step-icon" style="width: 40px; height: 40px; border-radius: 10px; background: rgba(16, 185, 129, 0.12); color: var(--color-genuine); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+        </div>
+        <h4 style="margin-bottom: 8px;">VERIFY</h4>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary);">Receive the authenticity result and confidence score.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       4. LIVE VERIFICATION EXPERIENCE PREVIEW
+       ========================================================= -->
+  <section class="container" style="margin-bottom: var(--space-12); position: relative; z-index: 1;">
+    <div class="card card-glass" style="padding: var(--space-10); border: 1px solid rgba(99, 102, 241, 0.25); background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(16px); border-radius: var(--radius-xl);">
+      
+      <div style="text-align: center; max-width: 600px; margin: 0 auto var(--space-8) auto;">
+        <h2>Verify a Product in Seconds</h2>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-top: 4px;">Start verification by choosing an image or entering listing details.</p>
+      </div>
+
+      <div class="grid grid-cols-12" style="gap: var(--space-8); align-items: center;">
+        
+        <!-- Upload Dropzone Preview -->
+        <div class="col-span-6">
+          <div class="dropzone" onclick="window.location.href='/verify'" style="padding: var(--space-8); border: 2px dashed rgba(99, 102, 241, 0.4); background: rgba(8, 12, 20, 0.6); border-radius: var(--radius-lg); text-align: center; cursor: pointer;">
+            <div style="width: 54px; height: 54px; border-radius: 50%; background: rgba(99, 102, 241, 0.15); color: #818cf8; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px auto;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <div style="font-weight: 700; font-size: 16px; color: var(--text-primary);">Drag & Drop your product image here</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px; margin-bottom: 12px;">OR</div>
+            <a href="/verify" class="btn btn-secondary" style="padding: 8px 20px; font-size: 13px; pointer-events: none;">[ Choose Image ]</a>
+          </div>
+        </div>
+
+        <!-- Workflow Visual Preview -->
+        <div class="col-span-6">
+          <div style="display: flex; flex-direction: column; gap: 16px; background: rgba(8, 12, 20, 0.5); padding: var(--space-6); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);">
+            
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(99, 102, 241, 0.2); color: #818cf8; display: flex; align-items: center; justify-content: center; font-weight: 700;">1</div>
+              <div>
+                <div style="font-weight: 700; font-size: 14px;">Product Image</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Uploaded reference sample or tag code</div>
+              </div>
+            </div>
+
+            <div style="text-align: center; color: var(--brand-primary); font-size: 16px;">↓</div>
+
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(6, 182, 212, 0.2); color: var(--cyan-accent); display: flex; align-items: center; justify-content: center; font-weight: 700;">2</div>
+              <div>
+                <div style="font-weight: 700; font-size: 14px;">AI Analysis</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Multi-signal classification model evaluation</div>
+              </div>
+            </div>
+
+            <div style="text-align: center; color: var(--cyan-accent); font-size: 16px;">↓</div>
+
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(16, 185, 129, 0.2); color: var(--color-genuine); display: flex; align-items: center; justify-content: center; font-weight: 700;">3</div>
+              <div>
+                <div style="font-weight: 700; font-size: 14px;">Result</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Instant verdict, score, and recommendations</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div style="text-align: center; margin-top: var(--space-8);">
+        <a href="/verify" class="btn btn-primary" style="padding: 12px 32px; font-size: 15px; font-weight: 700; border-radius: var(--radius-md); box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);">
+          Start Verification →
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       5. FEATURE SHOWCASE (4 ALTERNATING SECTIONS)
+       ========================================================= -->
+  <section class="container" style="margin-bottom: var(--space-12); position: relative; z-index: 1;">
+    <div style="text-align: center; max-width: 600px; margin: 0 auto var(--space-12) auto;">
+      <span style="font-size: var(--text-xs); font-weight: 800; color: var(--brand-primary); text-transform: uppercase; letter-spacing: 1px;">PLATFORM CAPABILITIES</span>
+      <h2 style="margin-top: 6px; font-size: var(--text-3xl);">Designed for Complete Authenticity Confidence</h2>
+    </div>
+
+    <!-- FEATURE 01: TEXT LEFT, VISUAL RIGHT -->
+    <div class="showcase-row">
+      <div class="col-span-6">
+        <span class="badge badge-low" style="margin-bottom: 12px; font-weight: 700;">FEATURE 01</span>
+        <h3 style="font-size: var(--text-2xl); margin-bottom: 12px;">AI-Powered Detection</h3>
+        <p style="font-size: var(--text-base); color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+          Use machine learning to analyze product images and identify potential counterfeit products through multi-signal pattern recognition.
+        </p>
+        <a href="/verify" class="btn btn-secondary">Try Verification Tool →</a>
+      </div>
+      <div class="col-span-6">
+        <div class="card card-glass" style="padding: var(--space-6); background: rgba(15, 23, 42, 0.8);">
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px;">Detection Architecture</div>
+          <div style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="text-align: center;">
+              <div style="font-size: 12px; font-weight: 700; color: var(--brand-primary);">Product Image</div>
+              <div style="font-size: 10px; color: var(--text-muted);">Visual Input</div>
+            </div>
+            <div style="color: var(--text-muted); font-size: 18px;">→</div>
+            <div style="text-align: center;">
+              <div style="font-size: 12px; font-weight: 700; color: var(--cyan-accent);">AI Network</div>
+              <div style="font-size: 10px; color: var(--text-muted);">Random Forest</div>
+            </div>
+            <div style="color: var(--text-muted); font-size: 18px;">→</div>
+            <div style="text-align: center;">
+              <div style="font-size: 12px; font-weight: 700; color: var(--color-genuine);">Detection Result</div>
+              <div style="font-size: 10px; color: var(--text-muted);">Risk Score</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE 02: VISUAL LEFT, TEXT RIGHT -->
+    <div class="showcase-row">
+      <div class="col-span-6">
+        <div class="card card-glass" style="padding: var(--space-6); background: rgba(15, 23, 42, 0.8);">
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px;">Verdict Breakdown Preview</div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.3);">
+              <span style="font-weight: 700; color: var(--color-genuine); font-size: 13px;">GENUINE VERDICT</span>
+              <span style="font-size: 12px; color: var(--color-genuine);">Low Risk (< 25%)</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(245, 158, 11, 0.1); border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.3);">
+              <span style="font-weight: 700; color: var(--color-warning); font-size: 13px;">SUSPICIOUS VERDICT</span>
+              <span style="font-size: 12px; color: var(--color-warning);">Moderate Risk (26-50%)</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(239, 68, 68, 0.1); border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3);">
+              <span style="font-weight: 700; color: var(--color-fake); font-size: 13px;">HIGH RISK FLAG</span>
+              <span style="font-size: 12px; color: var(--color-fake);">Critical Risk (> 50%)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-span-6">
+        <span class="badge badge-high" style="margin-bottom: 12px; font-weight: 700;">FEATURE 02</span>
+        <h3 style="font-size: var(--text-2xl); margin-bottom: 12px;">Understand the Result</h3>
+        <p style="font-size: var(--text-base); color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+          Get clear authenticity results with available confidence scores, detailed risk factor decomposition, and transparent model info.
+        </p>
+        <a href="/risk-analysis" class="btn btn-secondary">Open Risk Simulator →</a>
+      </div>
+    </div>
+
+    <!-- FEATURE 03: TEXT LEFT, VISUAL RIGHT -->
+    <div class="showcase-row">
+      <div class="col-span-6">
+        <span class="badge badge-moderate" style="margin-bottom: 12px; font-weight: 700;">FEATURE 03</span>
+        <h3 style="font-size: var(--text-2xl); margin-bottom: 12px;">Track Every Verification</h3>
+        <p style="font-size: var(--text-base); color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+          View your verification history, audit historical queries, and monitor product authenticity patterns over time.
+        </p>
+        <a href="/history" class="btn btn-secondary">View History Timeline →</a>
+      </div>
+      <div class="col-span-6">
+        <div class="card card-glass" style="padding: var(--space-6); background: rgba(15, 23, 42, 0.8);">
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px;">History Timeline Preview</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="padding: 8px 12px; background: var(--bg-body); border-radius: 6px; border-left: 3px solid var(--color-genuine); font-size: 12px; display: flex; justify-content: space-between;">
+              <span>Nike Air Jordan 1 Retro</span>
+              <span style="color: var(--color-genuine); font-weight: 700;">Genuine (12.4%)</span>
+            </div>
+            <div style="padding: 8px 12px; background: var(--bg-body); border-radius: 6px; border-left: 3px solid var(--color-fake); font-size: 12px; display: flex; justify-content: space-between;">
+              <span>Rolex Submariner Watch</span>
+              <span style="color: var(--color-fake); font-weight: 700;">High Risk (89.2%)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE 04: VISUAL LEFT, TEXT RIGHT -->
+    <div class="showcase-row">
+      <div class="col-span-6">
+        <div class="card card-glass" style="padding: var(--space-6); background: rgba(15, 23, 42, 0.8);">
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px;">Verification Report Preview</div>
+          <div style="background: var(--bg-body); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="font-weight: 700; font-size: 14px; color: var(--brand-primary);">OFFICIAL AUTHENTICITY AUDIT</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Document ID: AUDIT-2026-9918</div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 10px;">Includes signal evidence breakdown, model metrics, and manufacturer registry status.</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-span-6">
+        <span class="badge" style="background: rgba(168, 85, 247, 0.15); color: #a855f7; margin-bottom: 12px; font-weight: 700;">FEATURE 04</span>
+        <h3 style="font-size: var(--text-2xl); margin-bottom: 12px;">Turn Results Into Reports</h3>
+        <p style="font-size: var(--text-base); color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+          Generate professional verification reports for your records, marketplace disputes, or brand protection compliance.
+        </p>
+        <a href="/report" class="btn btn-secondary">Report Counterfeit Listing →</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- =========================================================
+       6. WHY VERIAUTHENTIC AI
+       ========================================================= -->
+  <section class="container" style="margin-bottom: var(--space-12); position: relative; z-index: 1;">
+    <div class="card card-glass" style="padding: var(--space-10); background: rgba(15, 23, 42, 0.75); border-radius: var(--radius-xl);">
+      <div style="text-align: center; max-width: 640px; margin: 0 auto var(--space-10) auto;">
+        <h2>Built to Make Product Verification Simpler</h2>
+        <p style="font-size: var(--text-base); color: var(--text-secondary); margin-top: 6px;">A modern verification stack designed for buyers, collectors, and marketplaces.</p>
+      </div>
+
+      <div class="grid grid-cols-3" style="gap: var(--space-6);">
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+          <div style="color: var(--color-genuine); font-size: 18px; font-weight: 800;">✓</div>
+          <div>
+            <div style="font-weight: 700; font-size: 15px; color: var(--text-primary);">AI-assisted verification</div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">ML model risk scoring across listing parameters.</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+          <div style="color: var(--color-genuine); font-size: 18px; font-weight: 800;">✓</div>
+          <div>
+            <div style="font-weight: 700; font-size: 15px; color: var(--text-primary);">Simple image-based workflow</div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">Easy upload interface for rapid assessment.</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+          <div style="color: var(--color-genuine); font-size: 18px; font-weight: 800;">✓</div>
+          <div>
+            <div style="font-weight: 700; font-size: 15px; color: var(--text-primary);">Clear results</div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">Plain language recommendations and risk factors.</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+          <div style="color: var(--color-genuine); font-size: 18px; font-weight: 800;">✓</div>
+          <div>
+            <div style="font-weight: 700; font-size: 15px; color: var(--text-primary);">Verification history</div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">Track and search all past query logs.</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+          <div style="color: var(--color-genuine); font-size: 18px; font-weight: 800;">✓</div>
+          <div>
+            <div style="font-weight: 700; font-size: 15px; color: var(--text-primary);">Analytics</div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">Live risk distribution telemetry dashboard.</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+          <div style="color: var(--color-genuine); font-size: 18px; font-weight: 800;">✓</div>
+          <div>
+            <div style="font-weight: 700; font-size: 15px; color: var(--text-primary);">Professional reports</div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">Counterfeit reporting tools and export capability.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       7. FINAL CALL TO ACTION BAND
+       ========================================================= -->
+  <section class="container" style="margin-bottom: var(--space-12); position: relative; z-index: 1;">
+    <div class="card card-raised" style="text-align: center; padding: var(--space-12) var(--space-8); background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%); color: #ffffff; border-radius: var(--radius-xl); border: 1px solid rgba(99, 102, 241, 0.4); box-shadow: 0 0 50px rgba(99, 102, 241, 0.25);">
+      <h2 style="color: #ffffff; margin-bottom: var(--space-4); font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800;">Not Sure It's Genuine?</h2>
+      <p style="color: rgba(255, 255, 255, 0.85); max-width: 500px; margin: 0 auto var(--space-8) auto; font-size: var(--text-lg);">
+        Let AI help you verify it.
+      </p>
+
+      <a href="/verify" class="btn btn-primary" style="padding: 14px 36px; font-size: 17px; font-weight: 700; border-radius: var(--radius-md); box-shadow: 0 0 25px rgba(99, 102, 241, 0.5);">
+        Verify a Product →
+      </a>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function toggleHeroDemo(type) {
+    const title = document.getElementById('demo-title');
+    const sub = document.getElementById('demo-sub');
+    const badge = document.getElementById('demo-badge-status');
+    const statusTxt = document.getElementById('demo-status-txt');
+    const scoreTxt = document.getElementById('demo-score-txt');
+    const scoreBar = document.getElementById('demo-score-bar');
+    const box = document.getElementById('demo-result-box');
+    const icon = document.getElementById('demo-prod-icon');
+    const gBtn = document.getElementById('demo-genuine-btn');
+    const fBtn = document.getElementById('demo-fake-btn');
+
+    if (type === 'genuine') {
+      title.textContent = 'Sony WH-1000XM5 Headphones';
+      sub.textContent = 'Product appears genuine • Code AUTH-SONY-9921';
+      badge.textContent = 'AUTHENTIC';
+      badge.className = 'badge badge-low';
+      statusTxt.textContent = 'Verified';
+      statusTxt.style.color = 'var(--color-genuine)';
+      scoreTxt.textContent = '91.5% Confidence';
+      scoreTxt.style.color = 'var(--color-genuine)';
+      scoreBar.style.width = '91.5%';
+      scoreBar.style.background = 'var(--color-genuine)';
+      box.style.borderLeftColor = 'var(--color-genuine)';
+      if (icon) icon.style.transform = 'scale(1) rotate(0deg)';
+      gBtn.classList.add('active');
+      fBtn.classList.remove('active');
+    } else {
+      title.textContent = 'Rolex Submariner Watch Clearance';
+      sub.textContent = 'Steep price discount & unregistered code tag';
+      badge.textContent = 'SUSPICIOUS';
+      badge.className = 'badge badge-critical';
+      statusTxt.textContent = 'Flagged';
+      statusTxt.style.color = 'var(--color-fake)';
+      scoreTxt.textContent = '89.2% Risk Score';
+      scoreTxt.style.color = 'var(--color-fake)';
+      scoreBar.style.width = '89.2%';
+      scoreBar.style.background = 'var(--color-fake)';
+      box.style.borderLeftColor = 'var(--color-fake)';
+      if (icon) icon.style.transform = 'scale(1.08) rotate(-4deg)';
+      fBtn.classList.add('active');
+      gBtn.classList.remove('active');
+    }
+  }
+</script>
+{% endblock %}

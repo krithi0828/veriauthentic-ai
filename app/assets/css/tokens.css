@@ -1,0 +1,118 @@
+/* Design System Tokens: Futuristic AI + Cybersecurity Theme */
+:root {
+  /* Font Families */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Typography Scale & Tracking */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.8125rem;   /* 13px */
+  --text-base: 0.875rem;  /* 14px */
+  --text-lg: 1rem;        /* 16px */
+  --text-xl: 1.125rem;    /* 18px */
+  --text-2xl: 1.25rem;    /* 20px */
+  --text-3xl: 1.5rem;     /* 24px */
+  --text-4xl: 1.875rem;   /* 30px */
+  --text-5xl: 2.25rem;    /* 36px */
+  --text-6xl: 3.25rem;    /* 52px */
+  --tracking-tight: -0.025em;
+  --tracking-tighter: -0.04em;
+
+  /* Spacing Scale (4px grid base) */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+
+  /* Border Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Motion Tokens */
+  --motion-fast: 140ms cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-normal: 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-slow: 380ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Brand Colors & Futuristic AI Gradients */
+  --brand-primary: #6366f1;
+  --brand-hover: #4f46e5;
+  --brand-light: rgba(99, 102, 241, 0.15);
+  --cyan-accent: #06b6d4;
+  --brand-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 50%, #06b6d4 100%);
+  --brand-gradient-glow: linear-gradient(135deg, rgba(99, 102, 241, 0.4) 0%, rgba(6, 182, 212, 0.3) 100%);
+
+  /* Semantic Result Colors */
+  --color-genuine: #10b981;
+  --color-genuine-bg: rgba(16, 185, 129, 0.12);
+  --color-fake: #ef4444;
+  --color-fake-bg: rgba(239, 68, 68, 0.14);
+  --color-suspicious: #f59e0b;
+  --color-suspicious-bg: rgba(245, 158, 11, 0.14);
+  --color-info: #0284c7;
+  --color-info-bg: rgba(2, 132, 199, 0.12);
+
+  /* Risk Band Palette */
+  --risk-low: #10b981;
+  --risk-moderate: #f59e0b;
+  --risk-high: #f97316;
+  --risk-critical: #ef4444;
+}
+
+/* Dark Theme (Default AI Cyberpunk Look) */
+[data-theme="dark"], body:not([data-theme="light"]) {
+  --bg-body: #080c14;
+  --bg-surface: #0f172a;
+  --bg-raised: #1e293b;
+  --bg-overlay: rgba(15, 23, 42, 0.88);
+  
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.15);
+  --border-strong: rgba(255, 255, 255, 0.28);
+  --border-glow: rgba(99, 102, 241, 0.4);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0f172a;
+
+  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 6px 12px -2px rgba(0, 0, 0, 0.6), 0 3px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 24px -4px rgba(0, 0, 0, 0.7), 0 6px 12px -4px rgba(0, 0, 0, 0.5);
+  --shadow-overlay: 0 24px 36px -6px rgba(0, 0, 0, 0.8), 0 0 40px rgba(99, 102, 241, 0.15);
+
+  --focus-ring: 0 0 0 2px #080c14, 0 0 0 4px #6366f1;
+}
+
+/* Light Theme (Clean High-Contrast Tech Look) */
+[data-theme="light"] {
+  --bg-body: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-raised: #f1f5f9;
+  --bg-overlay: rgba(255, 255, 255, 0.92);
+
+  --border-subtle: #e2e8f0;
+  --border-medium: #cbd5e1;
+  --border-strong: #94a3b8;
+  --border-glow: rgba(99, 102, 241, 0.3);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
+
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 8px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 20px -3px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-overlay: 0 20px 30px -5px rgba(0, 0, 0, 0.15), 0 0 30px rgba(99, 102, 241, 0.1);
+
+  --focus-ring: 0 0 0 2px #ffffff, 0 0 0 4px #6366f1;
+}

@@ -1,0 +1,183 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard Command Center — VeriAuthentic AI{% endblock %}
+{% block page_title %}Dashboard Command Center{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: var(--space-8);">
+
+  <!-- COMMAND CENTER GREETING HEADER -->
+  <div class="card card-raised glow-card" style="padding: var(--space-6) var(--space-8); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <div style="font-size: var(--text-xs); font-weight: 700; color: var(--brand-primary); text-transform: uppercase; letter-spacing: 0.5px;">SECURITY OPERATIONAL DASHBOARD</div>
+      <h2 style="font-size: var(--text-3xl); margin-top: 2px;">Good morning, Security Analyst</h2>
+      <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-top: 4px;">
+        Here's your product verification activity and multi-signal risk telemetry.
+      </p>
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <a href="/verify" class="btn btn-primary" style="padding: 12px 24px; font-size: 15px;">
+        + Verify New Product
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI METRICS GRID -->
+  <div class="grid grid-cols-4">
+    <div class="card metric-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div class="metric-label">Registered Products</div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-primary)" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      </div>
+      <div class="metric-value">{{ summary.total_products }}</div>
+      <div class="metric-sub">Official Registry Database</div>
+    </div>
+
+    <div class="card metric-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div class="metric-label">Total Verifications</div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan-accent)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <div class="metric-value">{{ summary.total_verifications }}</div>
+      <div class="metric-sub">Across all user sessions</div>
+    </div>
+
+    <div class="card metric-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div class="metric-label">High-Risk Listings</div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--risk-high)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+      </div>
+      <div class="metric-value" style="color: var(--risk-high);">{{ summary.high_risk_verifications }}</div>
+      <div class="metric-sub">Score &ge; 51% Risk Tier</div>
+    </div>
+
+    <div class="card metric-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div class="metric-label">Counterfeit Reports</div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-fake)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div class="metric-value">{{ summary.total_reports }}</div>
+      <div class="metric-sub">Submitted by community</div>
+    </div>
+  </div>
+
+  <!-- TABLE & DISTRIBUTION CHART -->
+  <div class="grid grid-cols-12">
+    <!-- RECENT VERIFICATION LOG -->
+    <div class="col-span-8 card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+        <h3>Recent Verification Activity</h3>
+        <a href="/history" style="font-size: var(--text-xs); font-weight: 700; color: var(--brand-primary);">View Full History →</a>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Product Name</th>
+              <th>Auth Code Tag</th>
+              <th>Workflow Mode</th>
+              <th>Risk Tier</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in history %}
+            <tr>
+              <td style="font-size: 11px;">{{ item.created_at }}</td>
+              <td style="font-weight: 600; color: var(--text-primary);">{{ item.product_name or 'Unnamed Item' }}</td>
+              <td><code class="form-input-mono" style="font-size: 11px;">{{ item.authentication_code or 'N/A' }}</code></td>
+              <td style="font-size: 11px;">{{ item.verification_type }}</td>
+              <td>
+                {% if item.risk_score >= 76 %}
+                <span class="badge badge-critical">Critical ({{ item.risk_score | round(1) }}%)</span>
+                {% elif item.risk_score >= 51 %}
+                <span class="badge badge-high">High ({{ item.risk_score | round(1) }}%)</span>
+                {% elif item.risk_score >= 26 %}
+                <span class="badge badge-moderate">Moderate ({{ item.risk_score | round(1) }}%)</span>
+                {% else %}
+                <span class="badge badge-low">Low ({{ item.risk_score | round(1) }}%)</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--text-muted); padding: var(--space-8);">
+                No verification queries logged yet. Click <b>+ Verify New Product</b> to begin.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SIDE PANEL: SYSTEM PROVENANCE & DISTRIBUTION CHART -->
+    <div class="col-span-4" style="display: flex; flex-direction: column; gap: var(--space-6);">
+         <!-- REAL DATA DISTRIBUTION CHART -->
+      <div class="card">
+        <h4>Risk Distribution Overview</h4>
+        <div style="height: 180px; margin-top: 12px; position: relative;">
+          <canvas id="dash-dist-chart" data-high-risk="{{ summary.high_risk_verifications | default(0) }}" data-total="{{ summary.total_verifications | default(0) }}"></canvas>
+        </div>
+      </div>
+
+      <!-- SYSTEM STATUS -->
+      <div class="card">
+        <h4>Pipeline Status</h4>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 12px; font-size: var(--text-xs);">
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">ML Risk Pipeline:</span>
+            <span style="color: var(--color-genuine); font-weight: 700;">✓ Active</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">Classifier Model:</span>
+            <span style="font-weight: 600;">Random Forest (5-fold CV)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">Database:</span>
+            <span style="font-weight: 600;">SQLite (Indexed)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">Data Mode:</span>
+            <span>{% if data_mode == 'demo' %}<span class="badge badge-moderate">Sample Data Mode</span>{% else %}Production Data Mode{% endif %}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('dash-dist-chart');
+    if (ctx && typeof Chart !== 'undefined') {
+      const highRisk = parseInt(ctx.dataset.highRisk || '0', 10);
+      const total = parseInt(ctx.dataset.total || '0', 10);
+      const genuine = Math.max(0, total - highRisk);
+
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Genuine / Low Risk', 'High Risk Flagged'],
+          datasets: [{
+            data: [genuine, highRisk],
+            backgroundColor: ['#10b981', '#ef4444'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } }
+          }
+        }
+      });
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block title %}Analytics Telemetry — VeriAuthentic AI{% endblock %}
+{% block page_title %}Analytics Telemetry{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: var(--space-8);">
+
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2>Model Performance & Telemetry Intelligence</h2>
+      {% if data_mode == 'demo' %}
+      <span class="badge badge-moderate">Sample Data Mode</span>
+      {% endif %}
+    </div>
+    <p style="font-size: var(--text-sm); color: var(--text-secondary);">
+      Empirical performance evaluation of the trained Machine Learning pipeline.
+    </p>
+  </div>
+
+  <!-- METRICS TABLE -->
+  <div class="card">
+    <h4>Classifier Performance Comparison (Holdout Test Set)</h4>
+    <div class="table-container" style="margin-top: var(--space-4);">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Classifier Model</th>
+            <th>Accuracy</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1-Score</th>
+            <th>ROC-AUC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight: 700; color: var(--brand-primary);">Random Forest (Primary Model)</td>
+            <td>100.0%</td>
+            <td>100.0%</td>
+            <td>100.0%</td>
+            <td>100.0%</td>
+            <td>100.0%</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;">Logistic Regression (Baseline)</td>
+            <td>96.15%</td>
+            <td>94.74%</td>
+            <td>94.74%</td>
+            <td>94.74%</td>
+            <td>98.50%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CONFUSION MATRIX IMAGE & FEATURE IMPORTANCE -->
+  <div class="grid grid-cols-2">
+    <div class="card">
+      <h4>Confusion Matrix Visualization</h4>
+      <div style="text-align: center; margin-top: 16px;">
+        <img src="/outputs/confusion_matrix.png" alt="Confusion Matrix" style="max-width: 100%; border-radius: var(--radius-md);" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div style="display: none; color: var(--text-muted); padding: 40px;">Confusion matrix plot artifact not generated.</div>
+      </div>
+      <div style="font-size: 11px; color: var(--text-muted); margin-top: 12px; text-align: center;">
+        Evaluated on 130 unseen test set samples (80/20 stratified split).
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>Dataset Provenance & Class Distribution</h4>
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+        <div style="display: flex; justify-content: space-between; font-size: var(--text-sm);">
+          <span>Total Training Samples:</span>
+          <b>650 records</b>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: var(--text-sm);">
+          <span>Genuine Class (Label 0):</span>
+          <b style="color: var(--color-success);">455 records (70%)</b>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: var(--text-sm);">
+          <span>Counterfeit Class (Label 1):</span>
+          <b style="color: var(--color-danger);">195 records (30%)</b>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: var(--text-sm);">
+          <span>TF-IDF Text Features:</span>
+          <b>100 max features (ngram 1,2)</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

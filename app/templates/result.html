@@ -1,0 +1,196 @@
+{% extends "layout.html" %}
+
+{% block title %}Verification Result — VeriAuthentic AI{% endblock %}
+{% block page_title %}Verification Result{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-8);">
+
+  <!-- ACTIONS TOPBAR -->
+  <div style="display: flex; justify-content: space-between; align-items: center;" class="no-print">
+    <div style="font-size: var(--text-xs); color: var(--text-muted);">Result ID: <code class="form-input-mono">{{ result.result_id }}</code></div>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn btn-secondary" onclick="window.print();">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save PDF
+      </button>
+      <a href="/report?code={{ result.auth_code }}&name={{ result.prediction_data.engineered_features.product_name if result.prediction_data else '' }}" class="btn btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+        Report listing
+      </a>
+      <a href="/compare" class="btn btn-secondary">Compare Listing</a>
+    </div>
+  </div>
+
+  <!-- CODE REUSE WARNING BANNER (IF APPLICABLE) -->
+  {% if result.code_reuse_info and result.code_reuse_info.reuse_alert %}
+  <div class="card card-raised" style="border-left: 6px solid var(--risk-critical); background-color: var(--color-critical-bg);">
+    <h4 style="color: var(--risk-critical); display: flex; align-items: center; gap: 8px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Potential Code Reuse Alert
+    </h4>
+    <p style="font-size: var(--text-sm); margin-top: 6px; color: var(--text-primary);">
+      This authentication code (<b>{{ result.auth_code }}</b>) has been checked across <b>{{ result.code_reuse_info.distinct_sessions }}</b> distinct user sessions. This indicates potential tag copying or clone duplication across marketplace listings.
+    </p>
+  </div>
+  {% endif %}
+
+  <!-- TOP-DOWN VERDICT HEADLINE & RISK GAUGE -->
+  {% if result.prediction_data %}
+  {% set risk = result.prediction_data.risk_score %}
+  {% set info = result.prediction_data.risk_level_info %}
+  
+  <div class="card card-raised" style="border-top: 6px solid {{ info.color }}; padding: var(--space-8);">
+    <div class="grid grid-cols-12" style="align-items: center;">
+      <div class="col-span-8">
+        <span class="badge {{ info.badge }}" style="margin-bottom: 8px;">{{ info.label }}</span>
+        
+        <h2 style="font-size: var(--text-3xl); margin-top: 6px;">
+          {% if risk > 50 %}
+          Higher risk: {{ result.explanation_data.risk_factors | length if result.explanation_data else 2 }} warning signals found
+          {% else %}
+          Low risk: Verified genuine product signals
+          {% endif %}
+        </h2>
+
+        <p style="font-size: var(--text-base); color: var(--text-secondary); margin-top: 12px; line-height: 1.6;">
+          {% if risk > 50 %}
+          This listing exhibits elevated counterfeit risk patterns. Price discount, seller history, or description keywords differ significantly from verified authentic sales.
+          {% else %}
+          Listing signals align closely with authentic retail patterns. Price, seller account history, and registry status meet genuine benchmarks.
+          {% endif %}
+        </p>
+      </div>
+
+      <!-- SEMICIRCULAR GAUGE -->
+      <div class="col-span-4" style="text-align: center;">
+        <svg width="160" height="100" viewBox="0 0 100 60">
+          <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="var(--bg-raised)" stroke-width="10" stroke-linecap="round"/>
+          <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="{{ info.color }}" stroke-width="10" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="{{ 126 - (126 * risk / 100) }}"/>
+          <text x="50" y="44" text-anchor="middle" font-size="18" font-weight="800" fill="var(--text-primary)">{{ risk | round(1) }}%</text>
+        </svg>
+        <div style="font-size: var(--text-xs); color: var(--text-muted); margin-top: 4px;">Risk Score</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- "WHAT THIS MEANS" & "WHAT YOU CAN DO NEXT" ADVISORY -->
+  <div class="grid grid-cols-2">
+    <div class="card">
+      <h4 style="color: var(--brand-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        What This Means
+      </h4>
+      <p style="font-size: var(--text-sm); line-height: 1.6;">
+        Our ML model analyzed the listing data. High risk scores highlight potential counterfeit listings, direct factory copy claims, or steep unverified discounts.
+      </p>
+    </div>
+
+    <div class="card" style="background: var(--bg-raised);">
+      <h4 style="color: var(--color-success); margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        What You Can Do Next
+      </h4>
+      <ul style="font-size: var(--text-sm); color: var(--text-secondary); list-style: none; display: flex; flex-direction: column; gap: 6px;">
+        {% if risk > 50 %}
+        <li>• Request proof of original store purchase invoice from seller.</li>
+        <li>• Verify the physical security code tag upon delivery before opening seals.</li>
+        <li>• Submit a counterfeit report if received item differs from description.</li>
+        {% else %}
+        <li>• Confirm the security code tag on the box matches <code>{{ result.auth_code }}</code>.</li>
+        <li>• Proceed with standard purchase precaution through protected checkout.</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+
+  {% endif %}
+
+  <!-- SEPARATE CARD 1: BRAND REGISTRY STATUS -->
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+      <h4>Database Registry Verification Status</h4>
+      {% if result.registered %}
+      <span class="badge badge-low">✓ Code Registered</span>
+      {% else %}
+      <span class="badge badge-critical">❌ Unregistered Security Code</span>
+      {% endif %}
+    </div>
+
+    {% if result.product_details %}
+    <div class="grid grid-cols-3" style="font-size: var(--text-sm); gap: 12px; background: var(--bg-body); padding: 16px; border-radius: var(--radius-md);">
+      <div><span style="color: var(--text-muted);">Product:</span> <b>{{ result.product_details.product_name }}</b></div>
+      <div><span style="color: var(--text-muted);">Brand:</span> <b>{{ result.product_details.brand }}</b></div>
+      <div><span style="color: var(--text-muted);">Batch:</span> <b>{{ result.product_details.batch_number }}</b></div>
+      <div><span style="color: var(--text-muted);">Mfg Date:</span> <b>{{ result.product_details.manufacturing_date }}</b></div>
+      <div><span style="color: var(--text-muted);">Origin:</span> <b>{{ result.product_details.origin_country }}</b></div>
+      <div><span style="color: var(--text-muted);">MSRP Reference:</span> <b>₹{{ result.product_details.reference_price }}</b></div>
+    </div>
+    {% else %}
+    <p style="font-size: var(--text-sm); color: var(--text-secondary);">
+      Authentication code <code>{{ result.auth_code or 'N/A' }}</code> is not found in the official brand registry database.
+    </p>
+    {% endif %}
+  </div>
+
+  <!-- SEPARATE CARD 2: ML MULTI-SIGNAL RISK BREAKDOWN -->
+  {% if result.prediction_data %}
+  <div class="card">
+    <h4>Machine Learning Signal Breakdown</h4>
+    {% set bd = result.prediction_data.multi_signal_breakdown %}
+    
+    <div style="display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-4);">
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: var(--text-xs); margin-bottom: 4px;">
+          <span>Price Deviation Risk (Model-derived)</span>
+          <span><b>{{ bd.price_risk | round(1) }}%</b></span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width: {{ bd.price_risk }}%; background-color: {% if bd.price_risk > 40 %}var(--risk-high){% else %}var(--risk-low){% endif %};"></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: var(--text-xs); margin-bottom: 4px;">
+          <span>Seller Credibility Risk (Model-derived)</span>
+          <span><b>{{ bd.seller_risk | round(1) }}%</b></span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width: {{ bd.seller_risk }}%; background-color: {% if bd.seller_risk > 50 %}var(--risk-high){% else %}var(--risk-low){% endif %};"></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: var(--text-xs); margin-bottom: 4px;">
+          <span>Text Description Risk (TF-IDF Keywords)</span>
+          <span><b>{{ bd.text_risk | round(1) }}%</b></span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width: {{ bd.text_risk }}%; background-color: {% if bd.text_risk > 50 %}var(--risk-high){% else %}var(--risk-low){% endif %};"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- PROGRESSIVE DISCLOSURE EXPANDER: HOW WAS THIS CALCULATED? -->
+  <details class="card" style="cursor: pointer;">
+    <summary style="font-weight: 700; font-size: var(--text-base); color: var(--text-primary);">
+      How was this calculated? (Technical Breakdown for Power Users)
+    </summary>
+    <div style="margin-top: 16px; font-size: var(--text-xs); color: var(--text-secondary); display: flex; flex-direction: column; gap: 12px;">
+      <div><b>Random Forest Classifier:</b> 100 Decision Trees trained on synthetic authentic & counterfeit product listing feature vectors.</div>
+      <div><b>Formula:</b> Risk Score = Round(100 × P(Counterfeit)). Risk Bands: Low (0-25%), Moderate (26-50%), High (51-75%), Critical (76-100%).</div>
+      {% if result.prediction_data %}
+      <div><b>Engineered Feature Vector:</b> <code>{{ result.prediction_data.engineered_features }}</code></div>
+      {% endif %}
+    </div>
+  </details>
+
+  <!-- DECISION SUPPORT DISCLAIMER -->
+  <div style="font-size: var(--text-xs); color: var(--text-muted); text-align: center; margin-top: var(--space-4);">
+    {{ result.disclaimer }}
+  </div>
+
+</div>
+{% endblock %}

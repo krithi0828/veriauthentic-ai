@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block title %}Model Card — VeriAuthentic AI{% endblock %}
+{% block page_title %}Model Card{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-8);">
+
+  <div class="card card-raised">
+    <h2>Model Card: VeriAuthentic Risk Classifier v1.0</h2>
+    <p style="font-size: var(--text-sm); color: var(--text-secondary);">
+      Detailed technical documentation on the machine learning model specifications, signal formulas, evaluation provenance, and system limitations.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>1. Intended Use & Target Scope</h3>
+    <p style="font-size: var(--text-sm); margin-top: 8px;">
+      <b>Intended Use:</b> Decision-support tool for online buyers and brand protection teams to evaluate counterfeit risk signals on marketplace listings.
+    </p>
+    <p style="font-size: var(--text-sm); margin-top: 8px;">
+      <b>Out-of-Scope:</b> This model does not inspect physical product hardware in-person or perform visual computer vision on product images. Image uploads are used exclusively for user preview and report attachment.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>2. Risk Score Formulation</h3>
+    <div style="font-size: var(--text-sm); margin-top: 8px; font-family: var(--font-mono); background: var(--bg-body); padding: 12px; border-radius: var(--radius-md);">
+      risk_score = round(P(counterfeit | X) * 100.0, 1)
+    </div>
+    <div style="margin-top: 12px; font-size: var(--text-sm);">
+      <b>Risk Tier Thresholds:</b>
+      <ul style="list-style: none; margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
+        <li>• <b>Low Risk:</b> 0.0% – 25.0%</li>
+        <li>• <b>Moderate Risk:</b> 25.1% – 50.0%</li>
+        <li>• <b>High Risk:</b> 50.1% – 75.0%</li>
+        <li>• <b>Critical Risk:</b> 75.1% – 100.0%</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>3. Multi-Signal Specifications</h3>
+    <div class="grid grid-cols-2" style="margin-top: 12px; font-size: var(--text-sm);">
+      <div>
+        <b>Model-Derived Features:</b>
+        <ul style="list-style: none; margin-top: 6px; display: flex; flex-direction: column; gap: 4px; color: var(--text-secondary);">
+          <li>• Price deviation percentage relative to MSRP</li>
+          <li>• Seller credibility composite score</li>
+          <li>• Review rating variance & extreme ratio</li>
+          <li>• TF-IDF description vector weights (max 100)</li>
+        </ul>
+      </div>
+      <div>
+        <b>Heuristic / Database Rules:</b>
+        <ul style="list-style: none; margin-top: 6px; display: flex; flex-direction: column; gap: 4px; color: var(--text-secondary);">
+          <li>• SQL lookup in official products registry</li>
+          <li>• Code reuse alert (same code in &ge;2 sessions)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends "layout.html" %}
+
+{% block title %}Verification History — VeriAuthentic AI{% endblock %}
+{% block page_title %}Verification History{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: var(--space-8);">
+
+  <!-- HEADER BAR WITH SEARCH & CONTROLS -->
+  <div class="card card-raised glow-card" style="padding: var(--space-6);">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <h2>Verification Activity Timeline</h2>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-top: 4px;">
+          Session-scoped query history for active browser session (<code>{{ session_id }}</code>).
+        </p>
+      </div>
+      
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <a href="/api/v1/history/export" class="btn btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export CSV
+        </a>
+        <a href="/verify" class="btn btn-primary">+ Verify Product</a>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div style="display: flex; gap: 16px; align-items: center; margin-top: var(--space-6); flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 240px;">
+        <input type="text" id="history-search" class="form-input" placeholder="Search product name or code tag..." oninput="filterHistory()">
+      </div>
+
+      <div class="segmented-control">
+        <button class="segmented-btn active" onclick="filterCategory('ALL', this)">All</button>
+        <button class="segmented-btn" onclick="filterCategory('GENUINE', this)">Genuine</button>
+        <button class="segmented-btn" onclick="filterCategory('SUSPICIOUS', this)">Suspicious</button>
+        <button class="segmented-btn" onclick="filterCategory('CRITICAL', this)">High Risk / Fake</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE CARDS CONTAINER -->
+  <div id="history-timeline-container" style="display: flex; flex-direction: column; gap: var(--space-4);">
+    {% for item in history %}
+    {% set risk = item.risk_score or 0 %}
+    {% if risk >= 76 %}
+      {% set cat = 'CRITICAL' %}
+      {% set border_color = 'var(--color-fake)' %}
+    {% elif risk >= 51 %}
+      {% set cat = 'HIGH' %}
+      {% set border_color = 'var(--color-fake)' %}
+    {% elif risk >= 26 %}
+      {% set cat = 'SUSPICIOUS' %}
+      {% set border_color = 'var(--color-suspicious)' %}
+    {% else %}
+      {% set cat = 'GENUINE' %}
+      {% set border_color = 'var(--color-genuine)' %}
+    {% endif %}
+    {% set p_name = item.product_name or '' %}
+    {% set p_code = item.authentication_code or '' %}
+    {% set search_text = p_name + ' ' + p_code %}
+    
+    <div class="card history-card" data-cat="{{ cat }}" data-search="{{ search_text }}" style="border-left: 5px solid {{ border_color }}; padding: var(--space-6);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">{{ item.created_at }}</span>
+            <span class="badge" style="font-size: 10px; background: var(--bg-body); border: 1px solid var(--border-subtle);">{{ item.verification_type }}</span>
+          </div>
+          <h4 style="margin-top: 6px; font-size: var(--text-lg);">{{ item.product_name or 'Marketplace Item' }}</h4>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+            Security Code Tag: <code class="form-input-mono">{{ item.authentication_code or 'N/A' }}</code>
+          </div>
+        </div>
+
+        <div style="text-align: right;">
+          {% if risk >= 76 %}
+          <span class="badge badge-critical">Critical Risk ({{ risk | round(1) }}%)</span>
+          {% elif risk >= 51 %}
+          <span class="badge badge-high">High Risk ({{ risk | round(1) }}%)</span>
+          {% elif risk >= 26 %}
+          <span class="badge badge-moderate">Moderate Risk ({{ risk | round(1) }}%)</span>
+          {% else %}
+          <span class="badge badge-low">Genuine / Low Risk ({{ risk | round(1) }}%)</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <!-- EMPTY STATE -->
+    <div class="card" style="text-align: center; padding: var(--space-12) var(--space-6);">
+      <div style="width: 56px; height: 56px; border-radius: var(--radius-lg); background: var(--brand-light); color: var(--brand-primary); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4) auto;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3>No Verification History Yet</h3>
+      <p style="font-size: var(--text-sm); color: var(--text-secondary); max-width: 420px; margin: 8px auto 20px auto;">
+        Your product verification activity will appear here. Start by checking a product code or marketplace listing.
+      </p>
+      <a href="/verify" class="btn btn-primary" style="padding: 12px 24px;">Verify Your First Product →</a>
+    </div>
+    {% endfor %}
+
+    <!-- NO SEARCH MATCH EMPTY STATE -->
+    <div id="no-search-match" class="card" style="display: none; text-align: center; padding: var(--space-8);">
+      <h4>No items match your search filter</h4>
+      <p style="font-size: var(--text-xs); color: var(--text-muted); margin-top: 4px;">Try clearing search keywords or selecting a different risk category.</p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  let activeCat = 'ALL';
+
+  function filterCategory(cat, btn) {
+    activeCat = cat;
+    const btns = btn.parentElement.querySelectorAll('.segmented-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterHistory();
+  }
+
+  function filterHistory() {
+    const q = (document.getElementById('history-search').value || '').toLowerCase();
+    const cards = document.querySelectorAll('.history-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const cardCat = card.getAttribute('data-cat') || '';
+      const text = (card.getAttribute('data-search') || '').toLowerCase();
+
+      const matchCat = (activeCat === 'ALL') || 
+                       (activeCat === 'GENUINE' && cardCat === 'GENUINE') ||
+                       (activeCat === 'SUSPICIOUS' && cardCat === 'SUSPICIOUS') ||
+                       (activeCat === 'CRITICAL' && (cardCat === 'CRITICAL' || cardCat === 'HIGH'));
+      
+      const matchSearch = text.includes(q);
+
+      if (matchCat && matchSearch) {
+        card.style.display = 'block';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    const noMatch = document.getElementById('no-search-match');
+    if (noMatch) {
+      noMatch.style.display = (cards.length > 0 && visibleCount === 0) ? 'block' : 'none';
+    }
+  }
+</script>
+{% endblock %}

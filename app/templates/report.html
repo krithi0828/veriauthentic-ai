@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+{% block title %}Report Counterfeit Listing — VeriAuthentic AI{% endblock %}
+{% block page_title %}Report Counterfeit Listing{% endblock %}
+
+{% block content %}
+<div style="max-width: 840px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-8);">
+
+  {% if success_msg %}
+  <!-- OFFICIAL DIGITAL VERIFICATION CERTIFICATE / SUBMISSION RECEIPT -->
+  <div class="card card-raised glow-card" style="padding: var(--space-8); border-top: 6px solid var(--color-genuine);">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-6); margin-bottom: var(--space-6);">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <img src="/assets/logo.svg" alt="Logo" width="40" height="40">
+        <div>
+          <span class="badge badge-low">Official Document</span>
+          <h3 style="margin-top: 2px;">Counterfeit Verification Record</h3>
+        </div>
+      </div>
+      <div style="text-align: right;" class="no-print">
+        <button class="btn btn-secondary" onclick="window.print();">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print Report Certificate
+        </button>
+      </div>
+    </div>
+
+    <div style="background: var(--color-genuine-bg); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-md); padding: 16px; color: var(--color-genuine); font-size: var(--text-base); margin-bottom: var(--space-6);">
+      <b>{{ success_msg }}</b>
+    </div>
+
+    <div style="font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6;">
+      This report has been transmitted to our brand protection telemetry system. Brand protection analysts will review the seller details and security tags to update the registry alerts.
+    </div>
+
+    <div style="margin-top: var(--space-8); text-align: center;">
+      <a href="/verify" class="btn btn-primary">Run Another Product Verification →</a>
+    </div>
+  </div>
+
+  {% else %}
+
+  <!-- COUNTERFEIT SUBMISSION FORM -->
+  <div class="card card-raised glow-card" style="padding: var(--space-8);">
+    <h2>Report Counterfeit Product / Listing</h2>
+    <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-6);">
+      Submit suspicious listings or counterfeit purchases to our brand protection telemetry engine.
+    </p>
+
+    <form action="/api/v1/reports" method="POST" style="margin-top: var(--space-6);">
+      <div class="grid grid-cols-2">
+        <div class="form-group">
+          <label class="form-label">Product Name / Title *</label>
+          <input type="text" name="product_name" class="form-input" placeholder="e.g. Nike Air Jordan 1 Retro" value="{{ prefill_name or '' }}" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Brand / Manufacturer</label>
+          <input type="text" name="brand" class="form-input" placeholder="e.g. Nike">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Authentication Code Tag (if available)</label>
+          <input type="text" name="authentication_code" class="form-input form-input-mono js-auth-code-input" value="{{ prefill_code or '' }}" placeholder="AUTH-XXXX-XXXX">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Seller Account Name / Store</label>
+          <input type="text" name="seller_name" class="form-input" placeholder="e.g. DiscountStore99">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2">
+        <div class="form-group">
+          <label class="form-label">Purchase Location / Marketplace URL *</label>
+          <input type="text" name="purchase_location" class="form-input" placeholder="e.g. eBay / Instagram Ad / Web Store" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Your Email Address *</label>
+          <input type="email" name="reporter_email" class="form-input" placeholder="e.g. buyer@example.com" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Detailed Reason for Counterfeit Suspicion *</label>
+        <textarea name="reason" class="form-textarea" rows="4" placeholder="Describe why you suspect this item is counterfeit (e.g. fake materials, blurred logo, missing warranty card, 70% price discount below retail MSRP, invalid code)..." required></textarea>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: var(--space-4);">
+        <button type="submit" class="btn btn-primary" style="padding: 12px 28px;">Submit Counterfeit Report →</button>
+      </div>
+    </form>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+
+{% block title %}Compare Listings — VeriAuthentic AI{% endblock %}
+{% block page_title %}Compare Listings{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: var(--space-8);">
+
+  <div class="card">
+    <h2>Side-by-Side Product Comparison</h2>
+    <p style="font-size: var(--text-sm); color: var(--text-secondary);">
+      Evaluate two marketplace listings side-by-side using the same trained Random Forest model.
+    </p>
+
+    <form action="/api/v1/compare" method="POST">
+      <div class="grid grid-cols-2" style="margin-top: var(--space-6);">
+        <!-- LISTING A -->
+        <div style="padding-right: var(--space-4); border-right: 1px solid var(--border-subtle);">
+          <h3>Listing A</h3>
+          <div class="form-group" style="margin-top: 12px;">
+            <label class="form-label">Product Name A</label>
+            <input type="text" name="name_a" class="form-input" value="Rolex Submariner Watch">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Listed Price A ($)</label>
+            <input type="number" step="0.01" name="list_price_a" class="form-input" value="11900.00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Reference MSRP A ($)</label>
+            <input type="number" step="0.01" name="ref_price_a" class="form-input" value="12500.00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Seller Age A (Days)</label>
+            <input type="number" name="seller_age_a" class="form-input" value="450">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Auth Code A</label>
+            <input type="text" name="code_a" class="form-input form-input-mono js-auth-code-input" value="AUTH-ROLEX-9901">
+          </div>
+        </div>
+
+        <!-- LISTING B -->
+        <div style="padding-left: var(--space-4);">
+          <h3>Listing B</h3>
+          <div class="form-group" style="margin-top: 12px;">
+            <label class="form-label">Product Name B</label>
+            <input type="text" name="name_b" class="form-input" value="Rolex Submariner Luxury Copy">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Listed Price B ($)</label>
+            <input type="number" step="0.01" name="list_price_b" class="form-input" value="2500.00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Reference MSRP B ($)</label>
+            <input type="number" step="0.01" name="ref_price_b" class="form-input" value="12500.00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Seller Age B (Days)</label>
+            <input type="number" name="seller_age_b" class="form-input" value="15">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Auth Code B</label>
+            <input type="text" name="code_b" class="form-input form-input-mono js-auth-code-input" value="AUTH-FAKE-0000">
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: center; margin-top: var(--space-6);">
+        <button type="submit" class="btn btn-primary" style="padding: 12px 32px;">Evaluate & Compare Both Listings</button>
+      </div>
+    </form>
+  </div>
+
+  {% if comparison %}
+  <div class="card card-raised">
+    <h3>Comparison Results</h3>
+    <div class="grid grid-cols-2" style="margin-top: var(--space-6);">
+      <div>
+        <h4>Listing A Evaluation</h4>
+        <div style="font-size: 24px; font-weight: 800; margin-top: 8px;">
+          Risk Score: {{ comparison.listing_a.result.risk_score | round(1) }}%
+        </div>
+        <span class="badge {{ comparison.listing_a.result.risk_level_info.badge }}">
+          {{ comparison.listing_a.result.risk_level_info.label }}
+        </span>
+      </div>
+
+      <div>
+        <h4>Listing B Evaluation</h4>
+        <div style="font-size: 24px; font-weight: 800; margin-top: 8px;">
+          Risk Score: {{ comparison.listing_b.result.risk_score | round(1) }}%
+        </div>
+        <span class="badge {{ comparison.listing_b.result.risk_level_info.badge }}">
+          {{ comparison.listing_b.result.risk_level_info.label }}
+        </span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

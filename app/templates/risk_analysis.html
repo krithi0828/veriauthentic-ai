@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+{% block title %}Risk Analysis Simulator — VeriAuthentic AI{% endblock %}
+{% block page_title %}Risk Sensitivity Simulator{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-8);">
+
+  <div class="card card-raised" style="padding: var(--space-8);">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+      <div>
+        <span class="badge badge-moderate" style="margin-bottom: 8px;">Sensitivity Simulation</span>
+        <h2>Interactive Risk Parameter Simulator</h2>
+        <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-top: 6px;">
+          Adjust input parameter sliders below to simulate how changes in price deviation, seller age, or rating metrics re-score risk via the real machine learning model.
+        </p>
+      </div>
+    </div>
+
+    <form id="sim-form" action="/api/v1/analyze/listing" method="POST" style="margin-top: var(--space-8); display: flex; flex-direction: column; gap: var(--space-6);">
+      
+      <div class="grid grid-cols-2">
+        <div class="form-group">
+          <label class="form-label">Product Name</label>
+          <input type="text" name="product_name" class="form-input" value="Sensitivity Simulation Product" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Brand</label>
+          <select name="brand" class="form-select">
+            <option value="Rolex">Rolex</option>
+            <option value="Nike">Nike</option>
+            <option value="Sony">Sony</option>
+            <option value="Apple">Apple</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- PRICE SLIDERS -->
+      <div style="background: var(--bg-body); padding: var(--space-6); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);">
+        <h4 style="color: var(--brand-primary); margin-bottom: 12px;">💰 Price & Discount Sensitivity</h4>
+        <div class="grid grid-cols-2">
+          <div class="form-group">
+            <label class="form-label">MSRP Reference Price (₹)</label>
+            <input type="number" step="0.01" id="sim-ref" name="reference_price" class="form-input js-ref-price" value="50000.00" oninput="updateSimDev()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Marketplace Listed Price (₹)</label>
+            <input type="number" step="0.01" id="sim-list" name="listed_price" class="form-input js-list-price" value="15000.00" oninput="updateSimDev()">
+          </div>
+        </div>
+        <div id="sim-dev-text" style="font-size: 13px; font-weight: 700; color: var(--color-warning); margin-top: 8px;">
+          Price Discount: 70.0% off MSRP (High Risk Signal)
+        </div>
+      </div>
+
+      <!-- SELLER CREDIBILITY SLIDERS -->
+      <div style="background: var(--bg-body); padding: var(--space-6); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);">
+        <h4 style="color: var(--color-success); margin-bottom: 12px;">👤 Seller History Sensitivity</h4>
+        <div class="grid grid-cols-2">
+          <div class="form-group">
+            <label class="form-label">Seller Account Age: <b id="val-age">30 Days</b></label>
+            <input type="range" name="seller_account_age_days" min="1" max="1000" value="30" class="form-input" style="padding: 0;" oninput="document.getElementById('val-age').textContent = this.value + ' Days'">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Seller Rating: <b id="val-rating">2.8 ★</b></label>
+            <input type="range" name="seller_rating" min="1.0" max="5.0" step="0.1" value="2.8" class="form-input" style="padding: 0;" oninput="document.getElementById('val-rating').textContent = this.value + ' ★'">
+          </div>
+        </div>
+      </div>
+
+      <!-- TEXT DESCRIPTION METRICS -->
+      <div style="background: var(--bg-body); padding: var(--space-6); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);">
+        <h4 style="color: var(--color-info); margin-bottom: 12px;">📝 Text Keywords Sensitivity</h4>
+        <div class="form-group">
+          <label class="form-label">Listing Description Text</label>
+          <input type="text" name="product_description" class="form-input" value="Grade 1A super copy direct liquidation sale no box fast shipping.">
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end;">
+        <button type="submit" class="btn btn-primary" style="padding: 12px 32px; font-size: 16px;">
+          Re-Score via Real Model
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function updateSimDev() {
+    const ref = parseFloat(document.getElementById('sim-ref').value) || 0;
+    const list = parseFloat(document.getElementById('sim-list').value) || 0;
+    const txt = document.getElementById('sim-dev-text');
+    if (ref > 0) {
+      const dev = ((ref - list) / ref) * 100.0;
+      txt.textContent = 'Price Discount: ' + dev.toFixed(1) + '% off MSRP (' + (dev >= 40 ? 'High Risk Signal' : 'Normal Range') + ')';
+      txt.style.color = dev >= 40 ? 'var(--color-danger)' : 'var(--color-success)';
+    }
+  }
+</script>
+{% endblock %}

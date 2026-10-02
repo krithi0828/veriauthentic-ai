@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATA_MODE=demo
+      - DATABASE_PATH=/app/database/product_authenticity.db
+      - SESSION_SECRET=super-secret-production-key-change-me
+    volumes:
+      - ./database:/app/database
+      - ./models:/app/models
+      - ./outputs:/app/outputs
+    restart: unless-stopped
